@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>電話受付をスムーズにする ご用件フォーム（デモ）</title>
+<style>
+  :root { color-scheme: light; --ink:#1f2937; --muted:#64748b; --line:#e2e8f0; --blue:#2457c5; --pale:#f4f7fc; --green:#16784b; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:#f3f5f8; color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif; line-height:1.6; }
+  .wrap { max-width:760px; margin:0 auto; padding:26px 16px 48px; }
+  .topline { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:18px; }
+  .brand { font-size:13px; font-weight:700; letter-spacing:.04em; color:#475569; }
+  .demo { border:1px solid #cbd5e1; background:#fff; color:#475569; padding:4px 10px; border-radius:99px; font-size:11px; font-weight:700; }
+  .hero { background:linear-gradient(135deg,#183b78,#3267bc); border-radius:20px; color:white; padding:26px 24px; box-shadow:0 12px 30px #183b781c; }
+  .eyebrow { font-size:12px; opacity:.8; letter-spacing:.08em; font-weight:700; }
+  h1 { font-size:clamp(23px,5vw,31px); line-height:1.35; margin:8px 0 10px; }
+  .hero p { margin:0; font-size:14px; color:#eaf0ff; }
+  .notice { margin:16px 0 20px; padding:13px 15px; background:#fff; border:1px solid var(--line); border-radius:12px; color:#475569; font-size:13px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:18px; padding:22px; box-shadow:0 8px 24px #0f172a08; }
+  .section-title { font-size:17px; font-weight:800; margin:0 0 4px; }
+  .sub { color:var(--muted); font-size:12px; margin:0 0 19px; }
+  .field { margin:0 0 17px; }
+  label,.legend { display:block; font-size:13px; font-weight:700; margin:0 0 7px; }
+  .req { color:#c2410c; font-size:11px; margin-left:5px; }
+  input,select,textarea { display:block; width:100%; border:1px solid #cbd5e1; border-radius:10px; background:white; padding:12px 13px; color:var(--ink); font:inherit; font-size:14px; outline:none; }
+  input:focus,select:focus,textarea:focus { border-color:#4978d1; box-shadow:0 0 0 3px #4978d122; }
+  textarea { min-height:112px; resize:vertical; }
+  .hint { color:#64748b; font-size:11px; margin:6px 0 0; }
+  .choices { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
+  .choice { display:flex; align-items:flex-start; gap:8px; border:1px solid var(--line); border-radius:10px; padding:10px 11px; font-size:13px; font-weight:500; margin:0; cursor:pointer; }
+  .choice input { width:auto; margin:4px 0 0; accent-color:var(--blue); }
+  .actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; }
+  button { border:0; border-radius:11px; padding:12px 17px; font:inherit; font-size:14px; font-weight:750; cursor:pointer; }
+  .primary { background:var(--blue); color:white; flex:1; min-width:190px; }
+  .secondary { background:#eef2f8; color:#334155; }
+  .fine { font-size:11px; color:#64748b; margin:13px 0 0; }
+  .hidden { display:none !important; }
+  .success { text-align:center; padding:26px 14px 12px; }
+  .check { display:inline-grid; place-items:center; width:48px; height:48px; border-radius:50%; background:#e8f7ef; color:var(--green); font-size:25px; font-weight:800; }
+  .success h2 { font-size:21px; margin:12px 0 5px; }
+  .success p { color:var(--muted); font-size:13px; margin:0; }
+  .admin { margin-top:18px; border:1px solid #cbd5e1; border-radius:14px; overflow:hidden; text-align:left; }
+  .admin-head { background:#f1f5f9; padding:12px 14px; font-weight:800; font-size:13px; display:flex; justify-content:space-between; gap:8px; }
+  .admin-body { padding:14px; font-size:13px; }
+  .admin-row { display:grid; grid-template-columns:110px 1fr; gap:10px; padding:7px 0; border-bottom:1px solid #eef2f6; }
+  .admin-row:last-child { border:0; }
+  .admin-key { color:#64748b; }
+  .priority { display:inline-block; border-radius:99px; padding:2px 9px; background:#fff1e8; color:#a84412; font-size:11px; font-weight:800; }
+  .disclaimer { margin-top:16px; font-size:11px; color:#64748b; text-align:center; }
+  footer { text-align:center; color:#94a3b8; font-size:10px; margin-top:25px; }
+  @media(max-width:540px) { .wrap{padding:15px 12px 34px}.hero{padding:22px 19px}.card{padding:18px 15px}.choices{grid-template-columns:1fr}.admin-row{grid-template-columns:95px 1fr} }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="topline"><div class="brand">CONTACT DESK　/　ご用件受付</div><span class="demo">プロトタイプ・デモ</span></div>
+  <section class="hero">
+    <div class="eyebrow">PHONE SUPPORT</div>
+    <h1>お電話の代わりに、<br>ご用件をお知らせください。</h1>
+    <p>打ち合わせ等で電話に出られない場合がございます。こちらにご用件をお送りいただければ、内容を確認のうえ折り返しいたします。</p>
+  </section>
+  <div class="notice">📩 <strong>入力の目安：約1分</strong><br>ご相談内容を簡単にお知らせください。確認後、必要に応じてお電話またはメールでご連絡いたします。</div>
+  <section class="card" id="formCard">
+    <h2 class="section-title">ご用件フォーム</h2>
+    <p class="sub">分かる範囲でご記入ください。必須項目には「必須」と表示しています。</p>
+    <form id="intakeForm">
+      <div class="field"><label for="name">お名前<span class="req">必須</span></label><input id="name" name="name" autocomplete="name" placeholder="例：山田 太郎" required></div>
+      <div class="field"><label for="company">会社名</label><input id="company" name="company" autocomplete="organization" placeholder="例：株式会社〇〇"></div>
+      <div class="field"><label for="phone">折り返し先の電話番号<span class="req">必須</span></label><input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="例：090-1234-5678" required></div>
+      <div class="field"><label for="topic">ご用件の種類<span class="req">必須</span></label><select id="topic" name="topic" required><option value="">選択してください</option><option>相談・質問</option><option>進行中の案件について</option><option>日程調整</option><option>折り返しのご依頼</option><option>その他</option></select></div>
+      <div class="field"><label for="details">ご用件の内容<span class="req">必須</span></label><textarea id="details" name="details" placeholder="どのようなご用件か、簡単にご記入ください。" required></textarea><p class="hint">※機密情報・個人情報など、詳細な情報は記入せず、概要のみお知らせください。</p></div>
+      <div class="field"><span class="legend">ご希望の折り返し時期</span><div class="choices">
+        <label class="choice"><input type="radio" name="urgency" value="できるだけ早く" checked>できるだけ早く</label>
+        <label class="choice"><input type="radio" name="urgency" value="本日中">本日中</label>
+        <label class="choice"><input type="radio" name="urgency" value="翌営業日以降">翌営業日以降で大丈夫</label>
+        <label class="choice"><input type="radio" name="urgency" value="急ぎではない">急ぎではない</label>
+      </div></div>
+      <div class="field"><label for="contact">折り返し方法の希望</label><select id="contact" name="contact"><option>電話を希望</option><option>メールでも可</option><option>どちらでも可</option></select></div>
+      <div class="actions"><button class="primary" type="submit">この内容で送信する（デモ）</button><button class="secondary" type="reset">入力をクリア</button></div>
+      <p class="fine">このページは試作用です。入力内容は外部に送信・保存されません。</p>
+    </form>
+  </section>
+  <section class="card hidden" id="resultCard">
+    <div class="success">
+      <span class="check">✓</span><h2>受付イメージ：送信完了</h2><p>実運用では、ここで受付完了画面を表示し、担当者へ通知します。</p>
+      <div class="admin">
+        <div class="admin-head"><span>担当者向け・受付内容の確認</span><span class="priority" id="priorityTag">優先度：高</span></div>
+        <div class="admin-body" id="adminBody"></div>
+      </div>
+      <div class="actions" style="justify-content:center"><button class="secondary" id="backBtn" type="button">フォームに戻る</button><button class="primary" id="copyBtn" type="button">受付内容をコピー</button></div>
+    </div>
+  </section>
+  <p class="disclaimer">※画面・文面の確認用デモです。電話会社との接続、SMS配信、フォーム保存、AIによる要約は実装していません。</p>
+  <footer>PHONE INTAKE PROTOTYPE</footer>
+</main>
+<script>
+const form = document.getElementById('intakeForm');
+const formCard = document.getElementById('formCard');
+const resultCard = document.getElementById('resultCard');
+let latestSummary = '';
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (!form.reportValidity()) return;
+  const data = new FormData(form);
+  const v = Object.fromEntries(data.entries());
+  const rows = [
+    ['お名前', v.name], ['会社名', v.company || '未入力'], ['折り返し先', v.phone], ['用件', v.topic],
+    ['ご希望時期', v.urgency], ['希望方法', v.contact], ['相談内容', v.details]
+  ];
+  document.getElementById('adminBody').innerHTML = rows.map(([k,val]) => `<div class="admin-row"><div class="admin-key">${escapeHTML(k)}</div><div>${escapeHTML(val).replace(/\n/g,'<br>')}</div></div>`).join('');
+  const high = ['できるだけ早く','本日中'].includes(v.urgency);
+  document.getElementById('priorityTag').textContent = high ? '優先確認' : '通常確認';
+  document.getElementById('priorityTag').style.background = high ? '#fff1e8' : '#edf4ff';
+  document.getElementById('priorityTag').style.color = high ? '#a84412' : '#2457c5';
+  latestSummary = rows.map(([k,val]) => `${k}：${val || '未入力'}`).join('\n');
+  formCard.classList.add('hidden'); resultCard.classList.remove('hidden');
+  resultCard.scrollIntoView({behavior:'smooth', block:'start'});
+});
+function escapeHTML(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+document.getElementById('backBtn').addEventListener('click', () => { resultCard.classList.add('hidden'); formCard.classList.remove('hidden'); formCard.scrollIntoView({behavior:'smooth'}); });
+document.getElementById('copyBtn').addEventListener('click', async () => { await copyText(latestSummary); document.getElementById('copyBtn').textContent = 'コピーしました'; });
+async function copyText(text) { try { await navigator.clipboard.writeText(text); } catch(e) { const t=document.createElement('textarea'); t.value=text; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); } }
+</script>
+</body>
+</html>
